@@ -1,22 +1,18 @@
 import express from "express";
-import { createClient, getClient } from "../db/client";
+import {createClient, getClientById, getAllClients, updateClient, deleteClient} from "../controllers/client";
 
-const clinetRoute = express.Router();
+const clientRoute = express.Router();
 
-type CreateClientBody = {
-  name: string;
-  email: string;
-};
 
-clinetRoute.get("/:id", async (req, res) => {
-  const client = await getClient(Number(req.params.id));
-  res.json(client);
-});
+clientRoute.get("/", getAllClients)
 
-clinetRoute.post("/", async (req, res) => {
-  const { name, email }: CreateClientBody = req.body;
-  const client = await createClient(name, email);
-  res.json(client);
-});
+clientRoute.get("/:id", getClientById)
 
-export default clinetRoute;
+clientRoute.post("/", createClient)
+
+clientRoute.put("/:id", updateClient)
+
+clientRoute.delete("/:id", deleteClient)
+
+
+export default clientRoute;
